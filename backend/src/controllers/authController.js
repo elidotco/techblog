@@ -5,7 +5,7 @@ const User = require("../models/userModel");
 // helper functions to generate token
 const generateAccseeToken = (user) => {
   return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
-    expiresIn: "30m",
+    expiresIn: "15m",
   });
 };
 
@@ -44,33 +44,39 @@ exports.register = async (req, res) => {
 // Login
 exports.login = async (req, res) => {
   const { email, password } = req.body;
+
   try {
-    // check if user exists
+    // Check if user exists
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "User does not exist" });
     }
-    // check if password is correct
+
+    // Check if password is correct
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Incorrect password" });
     }
-    // generate access token and refresh token
+
+    // Generate access token and refresh token
     const accessToken = generateAccseeToken(user);
     const refreshToken = generateRefreshToken(user);
-    //  set refresh token in the cookie
+
+    // Set refresh token in the cookie
     res.cookie("refreshtoken", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production" ? true : false,
+      secure: process.env.NODE_ENV === "production", // True if in production
       sameSite: "Strict",
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
-    // return the access token and refresh token to the client
+
+    // Return the access token to the client
     return res.status(200).json({ accessToken });
   } catch (err) {
-    console.log(err.message);
+    console.error("Error during login:", err.message);
+    return res.status(500).json({ message: "Internal Server Error" });
   } finally {
-    console.log("Login");
+    console.log("Login process completed");
   }
 };
 
