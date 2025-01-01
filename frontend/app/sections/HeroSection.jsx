@@ -1,4 +1,3 @@
-import { ST } from "next/dist/shared/lib/utils";
 import React from "react";
 
 const HeroSection = () => {
