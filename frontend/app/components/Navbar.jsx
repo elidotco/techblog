@@ -12,11 +12,11 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className=" w-full hidden md:flex justify-between items-center 2xl:px-32 py-5 lg:px-6 px-5 bg-dark-700 text-white">
+      <nav className=" w-full hidden md:flex justify-between items-center 2xl:px-32 py-5 md:px-20 px-5 bg-dark-700 text-white">
         {/* Logo */}
         <div className="flex items-center gap-4">
           <Image src="/logo.png" alt="logo" width={40} height={40} />{" "}
-          <p className="font-semibold text-2xl">TechBlog</p>
+          <p className="font-semibold hidden lg:flex text-2xl">TechBlog</p>
         </div>
         {/* Logo */}
         <ul className="flex gap-5">
@@ -44,7 +44,7 @@ const Navbar = () => {
         )}
       </nav>
       {/* make the mobile version */}
-      <nav className="relative  w-full flex md:hidden justify-between items-center 2xl:px-32 py-5 lg:px-6 px-5 bg-dark-700 text-white">
+      <nav className="relative  w-full flex md:hidden z-20 justify-between items-center 2xl:px-32 py-5 lg:px-6 px-5 bg-dark-700 text-white">
         {/* Logo */}
         <div className="flex items-center gap-2">
           <Image src="/logo.png" alt="logo" width={30} height={30} />{" "}
