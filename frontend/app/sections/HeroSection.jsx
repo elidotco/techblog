@@ -7,7 +7,7 @@ const HeroSection = () => {
       <section className="flex lg:flex-row flex-col justify-between border-b border-dark-100 ">
         {/* Intro and description */}
         <div className="text-dark-100 w-full  pt-10 md:pt-16 xl:pt-32 lg:w-3/5 lg:border-r-[0.5px] border-dark-100">
-          <div className="flex flex-col gap-5 pb-16 pl-5 md:px-20  xl:pl-32 pr-5 xl:pr-28 justify-center border-b-[0.5px] border-dark-100">
+          <div className="flex flex-col gap-5 pb-16 pl-5 md:px-10  xl:pl-20  pr-5 xl:pr-28 justify-center border-b-[0.5px] border-dark-100">
             <p className="text-normal xl:text-2xl ">
               Your Journey to Tomorrow Begins Here
             </p>
@@ -54,26 +54,29 @@ const HeroSection = () => {
       </section>
       <div className="w-full flex flex-col md:flex-row md:flex-wrap items-center px-5  md:px-20 xl:px-12">
         <StCa
-          num={300}
-          desc="Resources Avilable"
+          num="Stay Current"
+          desc="Latest News Updates"
           p={true}
           typ={true}
+          excerpt="Over 1,000 articles published monthly"
+          icon="/icon.png"
+        />
+        <StCa
+          num="Trusted Insights"
+          desc="Expert Contributors"
+          p={true}
+          typ={true}
+          excerpt="50+ renowned AI experts on our team"
           icon="/icon1.png"
         />
         <StCa
-          num={300}
-          desc="Resources Avilable"
-          p={true}
-          typ={true}
-          icon="/icon1.png"
-        />
-        <StCa
-          num={300}
-          desc="Resources Avilable"
+          num={"Worldwide Impact"}
+          desc="Global Readership"
           p={true}
           typ={true}
           b={true}
-          icon="/icon1.png"
+          excerpt="2 million monthly readers"
+          icon="/icon.png"
         />
       </div>
     </>
@@ -82,35 +85,35 @@ const HeroSection = () => {
 
 export default HeroSection;
 
-export const StCa = ({ b, num, desc, p, typ, icon }) => {
+export const StCa = ({ b, num, desc, p, typ, icon, excerpt }) => {
   return (
     <div
-      className={` py-5 xl:py-10 md:pl-20  ${
-        typ ? "w-full md:w-1/2 xl:w-1/3 py-8" : ""
+      className={` py-5 xl:py-10 md:pl-20  lg:pl-5  ${
+        typ ? "w-full  xl:w-1/3 py-8" : ""
       } ${
         b
           ? " "
           : typ
-          ? "border-b-[0.5px] md:border-b-0 md:border-r-[0.5px]"
+          ? "border-b-[0.5px] lg:border-b-0 lg:border-r-[0.5px]"
           : "border-r"
       } border-dark-100 flex items-start flex-col ${
-        p ? "" : "xl:pl-20 pl-5 "
+        p ? "" : "2xl:pl-20 xl:pl-10 pl-5 "
       }  w-1/3  "`}
     >
       {typ ? (
         <>
           {/* iconss */}
-          <img src={icon} alt="" className="w-10 h-10 " />
-          <div className="flex flex-row items-center justify-between w-full">
-            <div className="flex flex-col">
+          <img src={icon} alt="" className="w-10 h-10 mb-5 " />
+          <div className="flex flex-row items-center  pr-10 justify-between w-full">
+            <div className="flex flex-col ">
               {desc}
-              <p className="text-gray-300">{num}</p>
+              <p className="text-gray-700 text-sm">{num}</p>
             </div>
-            <div className="flex items-center p-4 rounded-full justify-center bg-yellow-800">
+            <div className="flex items-center p-3 rounded-full justify-center bg-yellow-800">
               <ArrowUpRightIcon className="h-5 w-5 text-dark-800" />
             </div>
-            <p className="text-gray-400">{p}</p>
           </div>
+          <p className="text-gray-700 pt-10">{excerpt}</p>
           {/* iconss */}
         </>
       ) : (
