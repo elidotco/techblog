@@ -1,6 +1,6 @@
 "use client";
 import { useAuth } from "@/app/context/authContext";
-import { useRouter } from "next/navigation";
+
 import React, { useEffect } from "react";
 
 const Page = () => {

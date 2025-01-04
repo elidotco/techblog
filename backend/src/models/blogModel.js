@@ -7,7 +7,6 @@ const blogSchema = new mongoose.Schema({
   },
   slug: {
     type: String,
-    required: true,
     unique: true,
   },
   description: {
@@ -20,7 +19,6 @@ const blogSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    required: true,
   },
   category: {
     type: mongoose.Schema.Types.ObjectId, // Use ObjectId for referencing

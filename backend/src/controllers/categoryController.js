@@ -2,7 +2,8 @@ const Category = require("../models/categoryModel");
 
 exports.getAllCategories = async (req, res) => {
   try {
-    const categories = await Category.find();
+    // return only name of categories
+    const categories = await Category.find().select("name");
     res.json(categories);
   } catch (error) {
     res.status(404).json({ message: error.message });
