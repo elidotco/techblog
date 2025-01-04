@@ -28,3 +28,27 @@ exports.postBlog = async (req, res) => {
     res.status(409).json({ message: error.message });
   }
 };
+
+// Get a blog by id
+exports.getBlogById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const blog = await Blog.findById(id);
+    res.json(blog);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+// get blog by category name
+exports.getBlogByCategory = async (req, res) => {
+  const { category } = req.query;
+  try {
+    const blogs = await Blog.find({
+      category: category,
+    });
+    res.json(blogs);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
