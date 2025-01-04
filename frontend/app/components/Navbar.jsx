@@ -8,6 +8,7 @@ import { useAuth } from "../context/authContext";
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const { user } = useAuth();
+  console.log(user);
   const shortName = user?.name.split(" ").map((n) => n[0]);
 
   return (
@@ -34,7 +35,7 @@ const Navbar = () => {
         ) : (
           <div className="flex gap-5">
             <button className="bg-yellow-800 text-dark-800  px-6 py-1.5 rounded-md">
-              Login
+              <a href="/login">Login</a>
             </button>
 
             <button className="bg-dark-800 text-gray-300  px-6 py-1.5 rounded-md">
