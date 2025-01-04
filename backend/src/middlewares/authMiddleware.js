@@ -20,3 +20,16 @@ exports.authenticateUser = (req, res, next) => {
     return res.status(500).json({ message: err.message });
   }
 };
+
+// authorize user
+exports.authorizeUser = (req, res, next) => {
+  const userRole = req.user.role; // Assuming `role` is part of the user payload in the token
+
+  if (userRole !== "admin" && userRole !== "editor") {
+    return res
+      .status(403)
+      .json({ message: "Access denied. Insufficient permissions." });
+  }
+
+  next();
+};
