@@ -12,6 +12,6 @@ export default function RootLayout({ children }) {
       router.push("/profile");
     }
   }, [user, router]);
-  console.log("Layout");
+
   return <div>{children}</div>;
 }

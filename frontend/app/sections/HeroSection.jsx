@@ -52,7 +52,7 @@ const HeroSection = () => {
         </div>
         {/* Image and the other stuff at the right hand side*/}
       </section>
-      <div className="w-full flex flex-col md:flex-row md:flex-wrap items-center px-5  md:px-20 xl:px-12">
+      <div className="w-full flex flex-col md:flex-row md:flex-wrap items-center px-5  md:px-10 xl:px-12">
         <StCa
           num="Stay Current"
           desc="Latest News Updates"
@@ -85,7 +85,15 @@ const HeroSection = () => {
 
 export default HeroSection;
 
-export const StCa = ({ b, num, desc, p, typ, icon, excerpt }) => {
+export const StCa = ({
+  b = false,
+  num = "",
+  desc = "",
+  p = false,
+  typ = false,
+  icon = "",
+  excerpt = "",
+}) => {
   return (
     <div
       className={` py-5 xl:py-10 md:pl-20  lg:pl-5  ${
@@ -94,7 +102,7 @@ export const StCa = ({ b, num, desc, p, typ, icon, excerpt }) => {
         b
           ? " "
           : typ
-          ? "border-b-[0.5px] lg:border-b-0 lg:border-r-[0.5px]"
+          ? "border-b-[0.5px] xl:border-b-0 xl:border-r-[0.5px]"
           : "border-r"
       } border-dark-100 flex items-start flex-col ${
         p ? "" : "2xl:pl-20 xl:pl-10 pl-5 "

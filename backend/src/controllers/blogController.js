@@ -2,7 +2,7 @@ const Blog = require("../models/blogModel");
 
 exports.getAllBlogs = async (req, res) => {
   try {
-    const blogs = await Blog.find();
+    const blogs = await Blog.find().populate("createdBy", "name");
     res.json(blogs);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -46,7 +46,7 @@ exports.getBlogByCategory = async (req, res) => {
   try {
     const blogs = await Blog.find({
       category: category,
-    });
+    }).populate("createdBy", "name");
     res.json(blogs);
   } catch (error) {
     res.status(404).json({ message: error.message });

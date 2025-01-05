@@ -8,7 +8,7 @@ import { useAuth } from "../context/authContext";
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const { user } = useAuth();
-  console.log(user);
+
   const shortName = user?.name.split(" ").map((n) => n[0]);
 
   return (
