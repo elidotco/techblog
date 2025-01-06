@@ -1,9 +1,7 @@
-const { getPostLike } = require("../controllers/likeController");
-
+const { getPostLike, likePost } = require("../controllers/likeController");
+console.log("likePost function:", likePost);
 const router = require("express").Router();
 
-router.post;
+router.post("/like_blog", likePost);
 router.get("/blog_likes", getPostLike);
-router.get;
-
 module.exports = router;

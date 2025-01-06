@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import api from "@/utils/api";
 import { ArrowUpRightIcon } from "@heroicons/react/20/solid";
 import { format } from "date-fns";
+import { useAuth } from "../context/authContext";
 
 const BlogPreviewSection = ({ data }) => {
   const [tab, setTab] = React.useState("All");
@@ -73,7 +74,7 @@ const PreviewSection = ({ tab }) => {
     }
   }, [tab]);
   return (
-    <div>
+    <div className="min-h-96">
       {loading ? (
         <p>Loading...</p>
       ) : (
@@ -87,20 +88,41 @@ const PreviewSection = ({ tab }) => {
   );
 };
 
+const likeHandle = async ({ id, user }) => {
+  try {
+    const response = await api.post(
+      `/likes/like_blog?postId=${id}&userId=${user}`
+    );
+    console.log("Like/Unlike Response:", response.data.done);
+    return response.data.done;
+  } catch (error) {
+    console.error(
+      "Failed to handle like:",
+      error.response?.data || error.message
+    );
+  }
+};
+
 //  blogcard
 const BlogCard = ({ data }) => {
-  console.log(data._id);
+  const [likes, setLikes] = useState();
+  const [like, setLike] = useState();
+
+  const { user } = useAuth();
+  console.log(user);
+
   useEffect(() => {
     const likes = async () => {
       try {
         const response = await api.get(`/likes/blog_likes?postId=${data._id}`);
-        console.log(response);
+        console.log(response.data);
+        setLikes(response.data.data);
       } catch (err) {
         console.error("Failed to fetch likes count:", err.message);
       }
     };
     likes();
-  }, [data._id]);
+  }, [data._id, like]);
 
   return (
     <div className="flex justify-between text-gray-700 px-5 md:px-10 lg:px-20 2xl:px-32 border-b border-gray-700 xl:gap-32 gap-10 py-16 flex-wrap">
@@ -126,8 +148,13 @@ const BlogCard = ({ data }) => {
         </div>
         {/* Stats on Likes, Comments, Shares */}
         <div className="flex">
-          <div className="rounded-full bg-dark-600 px-4 py-3 border-gray-700">
-            20k
+          <div
+            onClick={() =>
+              setLike(likeHandle({ id: data._id, user: user._id }))
+            }
+            className="rounded-full bg-dark-600 px-4 py-3 border-gray-700"
+          >
+            {likes}
           </div>
         </div>
         {/* Stats on Likes, Comments, Shares */}

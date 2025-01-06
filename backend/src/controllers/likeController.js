@@ -30,3 +30,34 @@ exports.getPostLike = async (req, res) => {
     });
   }
 };
+
+exports.likePost = async (req, res) => {
+  const { postId, userId } = req.query;
+  console.log(userId);
+
+  // Check if the user is authenticated
+  if (!userId) {
+    return res
+      .status(401)
+      .json({ message: "Unauthorized: User not logged in" });
+  }
+
+  try {
+    // Check if the user has already liked the post
+    const existingLike = await Like.findOne({ postId, userid: userId });
+
+    if (!existingLike) {
+      // If not liked yet, create and save a new like
+      const newLike = new Like({ postId, userid: userId });
+      await newLike.save();
+      return res.status(201).json({ done: 1 });
+    } else {
+      // If already liked, remove the like
+      await Like.findByIdAndDelete(existingLike._id);
+      return res.status(200).json({ done: 0 });
+    }
+  } catch (err) {
+    console.error("Error liking/unliking post:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
