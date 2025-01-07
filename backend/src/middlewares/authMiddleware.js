@@ -3,21 +3,17 @@ const jwt = require("jsonwebtoken");
 // authenticate user
 exports.authenticateUser = (req, res, next) => {
   try {
-    const token = req.headers.authorization.split(" ")[1];
-    if (!token)
-      return res.status(400).json({ message: "Invalid Authentication" });
+    const token = req.cookies.token;
+    // Access token from cookies
+    if (!token) {
+      return res.status(401).json({ error: "No token provided" });
+    }
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-      if (err)
-        return res
-          .status(400)
-          .json({ message: `${err} Invalid Authentication` });
-
-      req.user = user;
-      next();
-    });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded; // Attach user info to request
+    next(); // Continue to the next middleware
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    res.status(401).json({ error: "Invalid token" });
   }
 };
 

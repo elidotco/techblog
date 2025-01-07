@@ -1,7 +1,7 @@
 "use client";
 
 // Auth Context
-import api from "@/utils/api";
+import api, { scheduleTokenRefresh } from "@/utils/api";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { createContext, useState, useEffect } from "react";
@@ -16,25 +16,46 @@ export const AuthProvider = ({ children }) => {
   // Login Function
   const login = async (email, password) => {
     try {
+      // Send login request
       const response = await api.post("/auth/login", { email, password });
       const accessToken = response.data.accessToken;
-
-      // Save token to localStorage
-      localStorage.setItem("token", accessToken);
+      console.log(accessToken);
 
       // Set Authorization header for API requests
       api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+
+      // Option 1: Store token in cookie
+
+      // Option 2: Or save it temporarily in memory (less secure than cookies)
+      // memoryTokenStore = accessToken; // Use a global variable or state
+
+      // Schedule token refresh
 
       // Fetch user data
       const { data: userData } = await api.get("/auth/profile");
       setUser(userData.user);
 
-      // Redirect to profile page
-      router.push("/profile");
-      return true;
+      // Redirect user based on role
+      if (userData.user.role === "admin") {
+        router.push("/admin-dashboard");
+      } else {
+        router.push("/profile");
+      }
+
+      return { success: true };
     } catch (err) {
-      return false;
+      console.error("Login error:", err.response?.data || err.message);
+      return {
+        success: false,
+        message: err.response?.data?.message || "Login failed",
+      };
     }
+  };
+
+  const getCookie = (cookieName) => {
+    const cookies = document.cookie.split("; ");
+    const cookie = cookies.find((c) => c.startsWith(`${cookieName}=`));
+    return cookie ? cookie.split("=")[1] : null;
   };
 
   // Logout Function
@@ -51,26 +72,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // On Load: Fetch User Data (if Token Exists)
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      // Set default authorization header
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-      // Fetch user profile
-      api
-        .get("/auth/profile")
-        .then((response) => {
-          setUser(response.data.user);
-        })
-        .catch((error) => {
-          localStorage.removeItem("token"); // Remove token if it's invalid
-        })
-        .finally(() => setLoading(false)); // Mark loading as complete
-    } else {
-      setLoading(false); // No token, skip loading
-    }
-  }, []);
   //   check if the access token is expired or not and get the resfresh token from the cookie and send it to the backend to get a new access token
   // Token Refresh Function
   const refreshToken = async () => {
@@ -87,9 +89,26 @@ export const AuthProvider = ({ children }) => {
   };
   // the refreshToken function will be used in the interceptor to refresh the token when it expires
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      setLoading(true);
+      try {
+        const res = await api.get("/auth/profile");
+        setUser(res.data.user);
+        console.log(res);
+      } catch (error) {
+        console.error(error); // Log the error properly
+      } finally {
+        setLoading(false); // Ensure loading state is cleared
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
   // Loading UI
   if (loading) {
-    return <div>Loading...</div>; // Or a more styled loading spinner
+    return <div>Loading</div>;
   }
 
   return (

@@ -5,7 +5,7 @@ const User = require("../models/userModel");
 // helper functions to generate token
 const generateAccseeToken = (user) => {
   return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
-    expiresIn: "15m",
+    expiresIn: "1m",
   });
 };
 
@@ -69,6 +69,13 @@ exports.login = async (req, res) => {
       sameSite: "Strict",
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
+    res.cookie("token", accessToken, {
+      httpOnly: false,
+      secure: false, // True if in production
+      sameSite: "Strict",
+      maxAge: 15 * 60 * 1000, // 30 days
+      path: "/",
+    });
 
     // Return the access token to the client
     return res.status(200).json({ accessToken });
@@ -82,30 +89,52 @@ exports.login = async (req, res) => {
 
 exports.logout = (req, res) => {
   res.clearCookie("refreshtoken"); // Clear cookie on logout
+  res.clearCookie("token");
   res.status(200).json({ message: "Logged out successfully" });
 };
-
 exports.refreshToken = (req, res) => {
-  const rf_token = req.cookies.refreshtoken;
+  const rf_token = req.cookies.refreshtoken; // Get refresh token from cookies
+  console.log("Refresh Token:", rf_token);
+
   if (!rf_token) {
     return res.status(400).json({ message: "Please login or register" });
   }
+
+  // Verify the refresh token
   jwt.verify(rf_token, process.env.JWT_REFRESH_SECRET, (err, user) => {
+    console.log(user);
     if (err) {
+      console.error("Refresh Token Verification Error:", err);
       return res.status(400).json({ message: "Please login or register" });
     }
-    const accessToken = generateAccseeToken(user);
-    res.status(200).json({ accessToken });
+
+    // Generate a new access token
+    const accessToken = generateAccseeToken({ id: user.id, role: user.role }); // Include user ID or other payload
+    console.log(accessToken);
+    // Set the new access token in an HTTPOnly cookie
+    res.cookie("token", accessToken, {
+      httpOnly: true, // Prevent JavaScript access to the cookie
+      secure: process.env.NODE_ENV === "production", // Set to true in production
+      sameSite: "Strict", // Restrict cookie usage to same-site requests
+      maxAge: 30 * 60 * 1000, // 30 minutes
+      path: "/", // Accessible throughout the app
+    });
+
+    // Send success response
+    res.status(200).json({ accessToken }); // Optional: Send token in response for debugging
   });
 };
 
 exports.getProfile = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id);
-    if (!user) return res.status(404).json({ error: "User not found" });
+  console.log(req.user);
+  if (req.user) {
+    try {
+      const user = await User.findById(req.user.id);
+      if (!user) return res.status(404).json({ error: "User not found" });
 
-    res.status(200).json({ user });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch profile" });
+      res.status(200).json({ user });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch profile" });
+    }
   }
 };

@@ -14,7 +14,6 @@ export default function Home() {
 
     api.get("/categories").then((res) => {
       setCatgories(res.data);
-      console.log(res.data);
     });
   }, []);
   return (
