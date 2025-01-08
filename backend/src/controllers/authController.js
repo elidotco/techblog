@@ -5,15 +5,19 @@ const User = require("../models/userModel");
 // helper functions to generate token
 const generateAccseeToken = (user) => {
   return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
-    expiresIn: "1m",
+    expiresIn: "30m",
   });
 };
 
 // helper functions to generate refresh token
 const generateRefreshToken = (user) => {
-  return jwt.sign({ id: user._id }, process.env.JWT_REFRESH_SECRET, {
-    expiresIn: "30d",
-  });
+  return jwt.sign(
+    { id: user._id, role: user.role },
+    process.env.JWT_REFRESH_SECRET,
+    {
+      expiresIn: "30d",
+    }
+  );
 };
 
 // Register
@@ -94,7 +98,6 @@ exports.logout = (req, res) => {
 };
 exports.refreshToken = (req, res) => {
   const rf_token = req.cookies.refreshtoken; // Get refresh token from cookies
-  console.log("Refresh Token:", rf_token);
 
   if (!rf_token) {
     return res.status(400).json({ message: "Please login or register" });
@@ -102,15 +105,14 @@ exports.refreshToken = (req, res) => {
 
   // Verify the refresh token
   jwt.verify(rf_token, process.env.JWT_REFRESH_SECRET, (err, user) => {
-    console.log(user);
     if (err) {
       console.error("Refresh Token Verification Error:", err);
       return res.status(400).json({ message: "Please login or register" });
     }
 
     // Generate a new access token
-    const accessToken = generateAccseeToken({ id: user.id, role: user.role }); // Include user ID or other payload
-    console.log(accessToken);
+    const accessToken = generateAccseeToken({ _id: user.id, role: user.role }); // Include user ID or other payload
+
     // Set the new access token in an HTTPOnly cookie
     res.cookie("token", accessToken, {
       httpOnly: true, // Prevent JavaScript access to the cookie
@@ -126,7 +128,6 @@ exports.refreshToken = (req, res) => {
 };
 
 exports.getProfile = async (req, res) => {
-  console.log(req.user);
   if (req.user) {
     try {
       const user = await User.findById(req.user.id);

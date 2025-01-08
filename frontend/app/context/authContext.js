@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }) => {
       // Send login request
       const response = await api.post("/auth/login", { email, password });
       const accessToken = response.data.accessToken;
-      console.log(accessToken);
 
       // Set Authorization header for API requests
       api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;

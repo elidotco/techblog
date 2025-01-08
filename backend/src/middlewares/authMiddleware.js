@@ -10,6 +10,7 @@ exports.authenticateUser = (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
     req.user = decoded; // Attach user info to request
     next(); // Continue to the next middleware
   } catch (err) {

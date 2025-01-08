@@ -33,7 +33,6 @@ exports.getPostLike = async (req, res) => {
 
 exports.likePost = async (req, res) => {
   const { postId, userId } = req.query;
-  console.log(userId);
 
   // Check if the user is authenticated
   if (!userId) {
