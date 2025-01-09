@@ -1,11 +1,21 @@
 const Blog = require("../models/blogModel");
 
 exports.getAllBlogs = async (req, res) => {
-  try {
-    const blogs = await Blog.find().populate("createdBy", "name");
-    res.json(blogs);
-  } catch (error) {
-    res.status(404).json({ message: error.message });
+  const { page } = req.query;
+  if (page) {
+    try {
+      const blogs = await Blog.find().limit(page).populate("createdBy", "name");
+      res.json(blogs);
+    } catch (error) {
+      res.status(404).json({ message: error.message });
+    }
+  } else {
+    try {
+      const blogs = await Blog.find().populate("createdBy", "name");
+      res.json(blogs);
+    } catch (error) {
+      res.status(404).json({ message: error.message });
+    }
   }
 };
 
@@ -44,11 +54,13 @@ exports.getBlogById = async (req, res) => {
 
 // get blog by category name
 exports.getBlogByCategory = async (req, res) => {
-  const { category } = req.query;
+  const { category, page } = req.query;
   try {
     const blogs = await Blog.find({
       category: category,
-    }).populate("createdBy", "name");
+    })
+      .limit(page)
+      .populate("createdBy", "name");
     res.json(blogs);
   } catch (error) {
     res.status(404).json({ message: error.message });

@@ -63,12 +63,12 @@ const PreviewSection = ({ tab }) => {
   React.useEffect(() => {
     setLoading(true);
     if (tab === "All") {
-      api.get("/blog").then((res) => {
+      api.get("/blog?page=3").then((res) => {
         setPosts(res.data);
         setLoading(false);
       });
     } else {
-      api.get(`/blog/category?category=${tab}`).then((res) => {
+      api.get(`/blog/category?category=${tab}&&page=3`).then((res) => {
         setPosts(res.data);
         setLoading(false);
       });
@@ -158,7 +158,7 @@ const BlogCard = ({ data }) => {
   };
 
   return (
-    <div className="flex justify-between text-gray-700 px-5 md:px-10 lg:px-20 2xl:px-32 border-b border-gray-700 xl:gap-32 gap-10 py-16 flex-wrap">
+    <div className="flex justify-between text-gray-700 px-5 md:px-10 lg:px-20 2xl:px-32 border-b-[0.5px] border-gray-700 xl:gap-32 gap-10 py-16   flex-wrap">
       {/* Author */}
       <div className=" flex  gap-2 ">
         {/* image */}
@@ -168,7 +168,7 @@ const BlogCard = ({ data }) => {
       </div>
       {/* Author */}
       {/* BLog */}
-      <div className="flex flex-1 flex-col order-2 lg:order-none w-full  lg:min-w-fit gap-5">
+      <div className="flex lg:flex-1 flex-col order-2 lg:order-none md:w-full  lg:min-w-fit gap-5">
         <p className="text-normal">
           {" "}
           {format(new Date(data.createdAt), "MMMM dd, yyyy")}
