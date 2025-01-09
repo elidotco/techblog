@@ -12,13 +12,15 @@ exports.getAllBlogs = async (req, res) => {
 // Post a blog
 
 exports.postBlog = async (req, res) => {
-  const { title, description, markdown, image, category, createdBy } = req.body;
+  const { title, description, markdown, image, category, createdBy, slug } =
+    req.body;
   try {
     const newBlog = new Blog({
       title,
       description,
       markdown,
       image,
+      slug,
       category,
       createdBy,
     });

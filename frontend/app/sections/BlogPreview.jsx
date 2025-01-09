@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import api from "@/utils/api";
-import { ArrowUpRightIcon } from "@heroicons/react/20/solid";
+import { ArrowUpRightIcon, HeartIcon } from "@heroicons/react/20/solid";
+import { ChatBubbleOvalLeftIcon, ShareIcon } from "@heroicons/react/24/outline";
 import { format } from "date-fns";
 import { useAuth } from "../context/authContext";
 
@@ -106,23 +107,55 @@ const likeHandle = async ({ id, user }) => {
 //  blogcard
 const BlogCard = ({ data }) => {
   const [likes, setLikes] = useState();
-  const [like, setLike] = useState();
+  const [like, setLike] = useState(false);
+  console.log(like);
 
   const { user } = useAuth();
-  console.log(user);
 
   useEffect(() => {
-    const likes = async () => {
+    const fetchLikeStatus = async () => {
+      if (user) {
+        try {
+          const res = await api.get(`/likes/isliked?postId=${data._id}`);
+          setLike(res.data.done === 1); // Set the like state
+        } catch (err) {
+          console.error("Failed to check if liked:", err.message);
+        }
+      }
+    };
+
+    const fetchLikesCount = async () => {
       try {
         const response = await api.get(`/likes/blog_likes?postId=${data._id}`);
-        console.log(response.data);
-        setLikes(response.data.data);
+        setLikes(response.data.data); // Set the likes count
       } catch (err) {
         console.error("Failed to fetch likes count:", err.message);
       }
     };
-    likes();
-  }, [data._id, like]);
+
+    fetchLikeStatus();
+    fetchLikesCount();
+  }, [data._id, user]);
+
+  const handleLikeClick = async () => {
+    if (!user) {
+      alert("Please log in to like the post.");
+      return;
+    }
+
+    // Optimistically update the UI
+    const updatedLike = !like; // Toggle the like state
+    setLike(updatedLike); // Update the like state
+    setLikes((prevLikes) => (updatedLike ? prevLikes + 1 : prevLikes - 1)); // Update the likes count
+
+    const result = await likeHandle({ id: data._id, user: user._id });
+
+    // If the API call fails, revert the UI changes
+    if (result === null) {
+      setLike(!updatedLike); // Revert the like state
+      setLikes((prevLikes) => (updatedLike ? prevLikes - 1 : prevLikes + 1)); // Revert the likes count
+    }
+  };
 
   return (
     <div className="flex justify-between text-gray-700 px-5 md:px-10 lg:px-20 2xl:px-32 border-b border-gray-700 xl:gap-32 gap-10 py-16 flex-wrap">
@@ -147,14 +180,25 @@ const BlogCard = ({ data }) => {
           </div>
         </div>
         {/* Stats on Likes, Comments, Shares */}
-        <div className="flex">
+        <div className="flex gap-3">
           <div
-            onClick={() =>
-              setLike(likeHandle({ id: data._id, user: user._id }))
-            }
-            className="rounded-full bg-dark-600 px-4 py-3 border-gray-700"
+            onClick={handleLikeClick}
+            className="rounded-full bg-dark-600 px-4 py-1 flex items-center gap-x-2 border-gray-700"
           >
+            {like ? (
+              <HeartIcon className="w-5 h-5 text-[#FF5500]" />
+            ) : (
+              <HeartIcon className="w-5 h-5 " />
+            )}
             {likes}
+          </div>
+          <div className="rounded-full bg-dark-600 px-4 py-2 flex items-center gap-2 border-gray-700">
+            {" "}
+            <ChatBubbleOvalLeftIcon className=" w-6 h-6" /> 0
+          </div>
+          <div className="rounded-full bg-dark-600 px-4 py-3 flex items-center gap-2 border-gray-700">
+            {" "}
+            <ShareIcon className=" w-5 h-5" /> 0
           </div>
         </div>
         {/* Stats on Likes, Comments, Shares */}

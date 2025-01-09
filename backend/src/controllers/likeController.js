@@ -60,3 +60,18 @@ exports.likePost = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+// this is to check if the user has already likeed the post this should run on load
+exports.checkLike = async (req, res) => {
+  const userId = req.user.id;
+  const { postId } = req.query;
+
+  try {
+    const existingLike = await Like.findOne({ postId, userid: userId });
+    if (existingLike) {
+      return res.status(201).json({ done: 1 });
+    } else return res.status(201).json({ done: 0 });
+  } catch (err) {
+    console.log(err);
+  }
+};
