@@ -11,7 +11,7 @@ const BlogPreviewSection = ({ data }) => {
   const [tab, setTab] = React.useState("All");
   return (
     <section>
-      <div className="w-full  px-5 border-b-[0.5px] border-gray-700  md:px-10 lg:px-20 2xl:px-32 sm:px-5 xs:px-5 py-10">
+      <div className="w-full  px-5 border-b-[0.5px] border-dark-600  md:px-10 lg:px-20 2xl:px-32 sm:px-5 xs:px-5 py-10">
         <Swiper
           spaceBetween={20}
           slidesPerView="auto"
@@ -21,7 +21,7 @@ const BlogPreviewSection = ({ data }) => {
         >
           <SwiperSlide style={{ width: "150px" }}>
             <div
-              className={` py-3 border-[0.5px] flex text-gray-700 text-sm border-gray-700 rounded-md  transition-all duration-150 items-center cursor-pointer justify-center px-4  ${
+              className={` py-3 border-[0.5px] flex text-gray-700 text-sm border-dark-600 rounded-md  transition-all duration-150 items-center cursor-pointer justify-center px-4  ${
                 tab === "All"
                   ? "bg-dark-700 border-none text-white transition-all duration-150"
                   : ""
@@ -34,7 +34,7 @@ const BlogPreviewSection = ({ data }) => {
           {data.map((category) => (
             <SwiperSlide key={category._id} style={{ width: "150px" }}>
               <div
-                className={`py-3 border-[0.5px] cursor-pointer flex text-gray-700 text-sm border-gray-700 transition-all duration-150 rounded-md items-center justify-center px-4  ${
+                className={`py-3 border-[0.5px] cursor-pointer flex text-gray-700 text-sm border-dark-600 transition-all duration-150 rounded-md items-center justify-center px-4  ${
                   tab === category._id
                     ? "bg-dark-700 border-none transition-all duration-150 text-white"
                     : ""
@@ -60,7 +60,7 @@ const PreviewSection = ({ tab }) => {
   const [posts, setPosts] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setLoading(true);
     if (tab === "All") {
       api.get("/blog?page=3").then((res) => {
@@ -158,7 +158,7 @@ const BlogCard = ({ data }) => {
   };
 
   return (
-    <div className="flex justify-between text-gray-700 px-5 md:px-10 lg:px-20 2xl:px-32 border-b-[0.5px] border-gray-700 xl:gap-32 gap-10 py-16   flex-wrap">
+    <div className="flex justify-between text-gray-700 px-5 md:px-10 lg:px-20 2xl:px-32 border-b-[0.5px] border-dark-600 xl:gap-32 gap-10 py-16   flex-wrap">
       {/* Author */}
       <div className=" flex  gap-2 ">
         {/* image */}
@@ -183,7 +183,7 @@ const BlogCard = ({ data }) => {
         <div className="flex gap-3">
           <div
             onClick={handleLikeClick}
-            className="rounded-full bg-dark-600 px-4 py-1 flex items-center gap-x-2 border-gray-700"
+            className="rounded-full bg-dark-600 px-4 py-1 flex items-center gap-x-2 border-dark-600"
           >
             {like ? (
               <HeartIcon className="w-5 h-5 text-[#FF5500]" />
@@ -192,11 +192,11 @@ const BlogCard = ({ data }) => {
             )}
             {likes}
           </div>
-          <div className="rounded-full bg-dark-600 px-4 py-2 flex items-center gap-2 border-gray-700">
+          <div className="rounded-full bg-dark-600 px-4 py-2 flex items-center gap-2 border-dark-600">
             {" "}
             <ChatBubbleOvalLeftIcon className=" w-6 h-6" /> 0
           </div>
-          <div className="rounded-full bg-dark-600 px-4 py-3 flex items-center gap-2 border-gray-700">
+          <div className="rounded-full bg-dark-600 px-4 py-3 flex items-center gap-2 border-dark-600">
             {" "}
             <ShareIcon className=" w-5 h-5" /> 0
           </div>
@@ -205,7 +205,7 @@ const BlogCard = ({ data }) => {
       </div>
       <a
         href=""
-        className="py-2 border-[0.5px] px-3 cursor-pointer h-10 self-center rounded-md flex text-gray-700 text-sm border-gray-700 gap-1"
+        className="py-2 border-[0.5px] px-3 cursor-pointer h-10 self-center rounded-md flex text-gray-700 text-sm border-dark-600 gap-1"
       >
         {" "}
         View Blog <ArrowUpRightIcon className="w-5 h-5 text-yellow-800" />{" "}

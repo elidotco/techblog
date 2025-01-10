@@ -4,10 +4,10 @@ import React from "react";
 const HeroSection = () => {
   return (
     <>
-      <section className="flex lg:flex-row flex-col justify-between border-b border-dark-100 ">
+      <section className="flex lg:flex-row flex-col justify-between border-b border-dark-600 ">
         {/* Intro and description */}
-        <div className="text-dark-100 w-full  pt-10 md:pt-16 xl:pt-32 lg:w-3/5 lg:border-r-[0.5px] border-dark-100">
-          <div className="flex flex-col gap-5 pb-16 pl-5 md:px-10  xl:pl-20  pr-5 xl:pr-28 justify-center border-b-[0.5px] border-dark-100">
+        <div className="text-dark-100 w-full  pt-10 md:pt-16 xl:pt-32 lg:w-3/5 lg:border-r-[0.5px] border-dark-600">
+          <div className="flex flex-col gap-5 pb-16 pl-5 md:px-10  xl:pl-20  pr-5 xl:pr-28 justify-center border-b-[0.5px] border-dark-600">
             <p className="text-normal xl:text-2xl ">
               Your Journey to Tomorrow Begins Here
             </p>
@@ -44,7 +44,7 @@ const HeroSection = () => {
               Over 1,000 articles on emerging tech trends and breakthroughs.
             </p>
 
-            <button className="border-[0.5px] mt-4 border-dark-100 text-gray-700 flex items-center gap-1  px-6 py-2 rounded-md">
+            <button className="border-[0.5px] mt-4 border-dark-600 text-gray-700 flex items-center gap-1  px-6 py-2 rounded-md">
               Explore Resources{" "}
               <ArrowUpRightIcon className="h-5 w-5 text-yellow-700" />
             </button>
@@ -104,7 +104,7 @@ export const StCa = ({
           : typ
           ? "border-b-[0.5px] xl:border-b-0 xl:border-r-[0.5px]"
           : "border-r"
-      } border-dark-100 flex items-start flex-col ${
+      } border-dark-600 flex items-start flex-col ${
         p ? "" : "2xl:pl-20 xl:pl-10 pl-5 "
       }  w-1/3  "`}
     >

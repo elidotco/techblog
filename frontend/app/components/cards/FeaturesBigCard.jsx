@@ -3,7 +3,7 @@ import React from "react";
 
 const FeaturesBigCard = () => {
   return (
-    <div className="flex flex-col lg:flex-row border-b border-gray-700  justify-between items-center ">
+    <div className="flex flex-col lg:flex-row border-b border-dark-600  justify-between items-center ">
       {/* Left Side of the card containing the intro to the feature */}
       <div className="lg:w-2/5 w-full py-20 px-5 md:px-10 lg:px-20 2xl:px-32 ">
         {/* Icon */}
@@ -18,7 +18,7 @@ const FeaturesBigCard = () => {
       </div>
       {/* Left Side of the card containing the intro to the feature */}
       {/* Right Side of the card containing the the sub features */}
-      <div className="lg:w-3/5 w-full py-20 flex border-l border-dark-100 flex-wrap gap-5 px-5 md:px-10">
+      <div className="lg:w-3/5 w-full py-20 flex border-l border-dark-600 flex-wrap gap-5 px-5 md:px-10">
         {featuresDataOne.map((data, index) => (
           <SubfeaturesCard key={index} {...data} />
         ))}
@@ -32,7 +32,7 @@ const FeaturesBigCard = () => {
 export default FeaturesBigCard;
 export const SubfeaturesCard = (data) => {
   return (
-    <div className="p-5 w-full md:w-[48%]  bg-dark-600 rounded-md border border-dark-100">
+    <div className="p-5 w-full md:w-[48%]  bg-dark-600 rounded-md border border-dark-600">
       <p>{data?.title}</p>
       <p className="text-gray-700 text-sm">{data?.excerpt}</p>
     </div>
