@@ -183,7 +183,7 @@ const BlogCard = ({ data }) => {
         <div className="flex gap-3">
           <div
             onClick={handleLikeClick}
-            className="rounded-full bg-dark-600 px-4 py-1 flex items-center gap-x-2 border-dark-600"
+            className="rounded-full bg-dark-600 px-4 cursor-pointer py-1 flex items-center gap-x-2 border-dark-600"
           >
             {like ? (
               <HeartIcon className="w-5 h-5 text-[#FF5500]" />
@@ -192,11 +192,11 @@ const BlogCard = ({ data }) => {
             )}
             {likes}
           </div>
-          <div className="rounded-full bg-dark-600 px-4 py-2 flex items-center gap-2 border-dark-600">
+          <div className="rounded-full bg-dark-600 px-4 cursor-pointer py-2 flex items-center gap-2 border-dark-600">
             {" "}
             <ChatBubbleOvalLeftIcon className=" w-6 h-6" /> 0
           </div>
-          <div className="rounded-full bg-dark-600 px-4 py-3 flex items-center gap-2 border-dark-600">
+          <div className="rounded-full bg-dark-600 cursor-pointer px-4 py-3 flex items-center gap-2 border-dark-600">
             {" "}
             <ShareIcon className=" w-5 h-5" /> 0
           </div>
