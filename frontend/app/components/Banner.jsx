@@ -6,7 +6,7 @@ const Banner = ({ data, type }) => {
       className={`${
         type
           ? "flex flex-row flex-wrap lg:flex-col"
-          : "bg-dark-600 w-full py-10 lg:px-20 md:px-10 px-5 2xl:px-32"
+          : "bg-dark-600 w-full py-20 lg:px-20 md:px-10 px-5 2xl:px-32"
       }`}
     >
       <div className="p-2 bg-dark-500 text-sm rounded-sm mb-5  w-fit">

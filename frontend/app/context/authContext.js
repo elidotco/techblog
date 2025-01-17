@@ -87,6 +87,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
   // the refreshToken function will be used in the interceptor to refresh the token when it expires
+  const [categories, setCatgories] = useState([]);
+  //fetch the needed data for the home page
+  useEffect(() => {
+    //fetch
+
+    api.get("/categories").then((res) => {
+      setCatgories(res.data);
+    });
+  }, []);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -110,7 +119,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login, logout }}>
+    <AuthContext.Provider value={{ user, setUser, login, logout, categories }}>
       {children}
     </AuthContext.Provider>
   );

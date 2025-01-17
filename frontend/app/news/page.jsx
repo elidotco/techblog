@@ -1,6 +1,12 @@
+"use client";
+
 import React from "react";
+import BlogPreviewSection from "../sections/BlogPreview";
+import { useAuth } from "../context/authContext";
+import { Banner } from "../components";
 
 const Home = () => {
+  const { categories } = useAuth();
   return (
     <section>
       {/* Title */}
@@ -18,6 +24,21 @@ const Home = () => {
         </div>
       </div>
       {/* Title */}
+      <Banner
+        data={{
+          title: "Welcome to Our News Hub",
+          excerpt: "Discover the World of Headlines",
+        }}
+      />
+      {/* BLog PReview Section */}
+      <BlogPreviewSection data={categories} />
+      {/* BLog PReview Section */}
+      <Banner
+        data={{
+          title: "Featured Videos",
+          excerpt: "Visual Insights for the Modern Viewer",
+        }}
+      />
     </section>
   );
 };

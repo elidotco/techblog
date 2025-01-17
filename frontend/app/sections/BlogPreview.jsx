@@ -8,7 +8,7 @@ import { format } from "date-fns";
 import { useAuth } from "../context/authContext";
 
 const BlogPreviewSection = ({ data }) => {
-  const [tab, setTab] = React.useState("All");
+  const [tab, setTab] = useState("All");
   return (
     <section>
       <div className="w-full  px-5 border-b-[0.5px] border-dark-600  md:px-10 lg:px-20 2xl:px-32 sm:px-5 xs:px-5 py-10">
