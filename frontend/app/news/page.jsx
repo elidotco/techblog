@@ -4,6 +4,7 @@ import React from "react";
 import BlogPreviewSection from "../sections/BlogPreview";
 import { useAuth } from "../context/authContext";
 import { Banner } from "../components";
+import NeswsCard1 from "../components/cards/NeswsCard1";
 
 const Home = () => {
   const { categories } = useAuth();
@@ -24,6 +25,7 @@ const Home = () => {
         </div>
       </div>
       {/* Title */}
+      <NeswsCard1 />
       <Banner
         data={{
           title: "Welcome to Our News Hub",
